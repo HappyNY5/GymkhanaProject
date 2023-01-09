@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class CarControl : MonoBehaviour
     [SerializeField] private float motorForce;
     [SerializeField] private float steerAngle;
 
+    [SerializeField] private float slipLim;
+
     private float horizInput, vertInput, curSteerAngle;
     private Rigidbody rigidBody;
 
@@ -19,12 +22,15 @@ public class CarControl : MonoBehaviour
     void Start()
     {
         rigidBody = this.GetComponent<Rigidbody>();
+
+        
     }
 
     void FixedUpdate()
     {
         Inputs();
     }
+
 
     private void Inputs()
     {
@@ -44,11 +50,28 @@ public class CarControl : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            if(rigidBody.velocity.magnitude < maxSpeed)
+
+            if( rigidBody.velocity.magnitude < maxSpeed && vertInput > 0)
+            {
                 wheelColliders[i].motorTorque = motorForce * vertInput;
+                wheelColliders[i].brakeTorque = 0;
+            }
+            else if(vertInput < 0)
+                wheelColliders[i].brakeTorque = 100000;
             else 
+            {
                 wheelColliders[i].motorTorque = 0;
-            // wheelColliders[i].rpm = motorForce;
+                wheelColliders[i].brakeTorque = 0;
+            }
+
+            WheelHit hit;
+            if(wheelColliders[i].GetGroundHit(out hit))
+                if(Mathf.Abs(hit.forwardSlip) + Mathf.Abs(hit.sidewaysSlip) >= slipLim)
+                {
+                    wheelColliders[i].GetComponentInChildren<ParticleSystem>().Play();
+                }else{
+                    wheelColliders[i].GetComponentInChildren<ParticleSystem>().Stop();
+                }
 
             // Debug.Log(rigidBody.velocity.magnitude < maxSpeed);
             
