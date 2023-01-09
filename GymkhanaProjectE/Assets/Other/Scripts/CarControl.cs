@@ -8,10 +8,18 @@ public class CarControl : MonoBehaviour
 
     [SerializeField] private Transform[] wheels;
 
+    [SerializeField] private int maxSpeed;
     [SerializeField] private float motorForce;
     [SerializeField] private float steerAngle;
 
     private float horizInput, vertInput, curSteerAngle;
+    private Rigidbody rigidBody;
+
+
+    void Start()
+    {
+        rigidBody = this.GetComponent<Rigidbody>();
+    }
 
     void FixedUpdate()
     {
@@ -36,12 +44,20 @@ public class CarControl : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            wheelColliders[i].motorTorque = vertInput * motorForce;
+            if(rigidBody.velocity.magnitude < maxSpeed)
+                wheelColliders[i].motorTorque = motorForce * vertInput;
+            else 
+                wheelColliders[i].motorTorque = 0;
+            // wheelColliders[i].rpm = motorForce;
+
+            // Debug.Log(rigidBody.velocity.magnitude < maxSpeed);
+            
 
             Vector3 pos;
             Quaternion rot;
 
             wheelColliders[i].GetWorldPose(out pos, out rot);       
+
             
             wheels[i].position = pos;
             wheels[i].rotation = rot;
