@@ -5,7 +5,17 @@ using UnityEngine;
 
 public class CarControl : MonoBehaviour
 {
+    [Header("---VISUAL PARTS---")]
+    [SerializeField] private GameObject[] bodyModels;
+    private uint curBodyIndex = 0; 
+    [SerializeField] private Material bodyColorMaterial;
+    [SerializeField] private Color[] bodyColors;
+    private uint curBodyColorIndex = 0; 
+    [SerializeField] private GameObject[] wheelModels;
+    private uint curWheelsIndex = 0; 
+    [SerializeField] private Color wheelColor;
 
+    [Space]
     [Header("---WHEELS SETTINGS---")]
     [SerializeField] private WheelCollider[] wheelColliders;
     [SerializeField] private Transform[] wheels;
@@ -26,10 +36,18 @@ public class CarControl : MonoBehaviour
     private Rigidbody rigidBody;
     private Vector3 startPos;
 
+    private GameObject mainBodyModel;
+    private GameObject mainWheelsModel;
+    private Transform bodyParentTransform;
+
    void Start()
     {
         rigidBody = this.GetComponent<Rigidbody>();
         startPos = this.transform.position;
+
+        bodyParentTransform = this.transform.GetChild(0);
+
+        NextBody();
     }
 
     void Update()
@@ -46,13 +64,23 @@ public class CarControl : MonoBehaviour
             SetSmokeSettings();
         }
 
-        
-
-        for (int i = 0; i < 4; i++)
+        if(Input.GetKeyDown(KeyCode.N))
         {
-            TireSmokeAnim(i);
+            NextBody();
+        }
+
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            NextBodyColor();
+        }
+
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            NextWheels();
         }
     }
+
+   
 
     void FixedUpdate()
     {
@@ -62,10 +90,11 @@ public class CarControl : MonoBehaviour
             StableCar();        
     }
 
+
+//=============================================================\\
     private void StableCar()
     {
         float stableForce = 6f;
-
 
         if(Mathf.Abs(this.transform.eulerAngles.x) >= 5)
         {
@@ -84,6 +113,75 @@ public class CarControl : MonoBehaviour
             rigidBody.AddForceAtPosition(forceVector, posVector);
             Debug.DrawRay(posVector, forceVector, Color.blue);
         }
+    }
+    private void NextBody(int chasableBodyIndex = -1)
+    {
+        //сделать выбор по номеру
+
+        if(curBodyIndex + 1 <= bodyModels.Length - 1)
+            curBodyIndex += 1;
+        else 
+            curBodyIndex = 0;
+
+        mainBodyModel = bodyModels[curBodyIndex];
+
+        if(bodyParentTransform.childCount != 0)
+            Destroy(bodyParentTransform.GetChild(0).gameObject);
+        Instantiate(mainBodyModel, bodyParentTransform);
+
+        ChangeWheelsPos();
+    }
+
+    private void NextWheels(int chasableWheelsIndex = -1)
+    {
+        //сделать выбор по номеру
+
+        if(curWheelsIndex + 1 <= wheelModels.Length - 1)
+            curWheelsIndex += 1;
+        else 
+            curWheelsIndex = 0;
+
+        mainWheelsModel = wheelModels[curWheelsIndex];
+
+
+        
+        for (int i = 0; i < 4; i++)
+        {
+
+            wheels[i].GetComponentInChildren<MeshFilter>().mesh = mainWheelsModel.GetComponentInChildren<MeshFilter>().sharedMesh;
+            // Destroy(wheels[i].GetChild(0).gameObject);
+
+            // GameObject wheel = Instantiate(mainWheelsModel, wheels[i].transform.position, Quaternion.Euler(this.transform.eulerAngles.x, 90 - (180 * -1 * (i%2)), this.transform.eulerAngles.z), wheels[i]);
+        }
+        
+
+        
+        
+    }
+
+    private void ChangeWheelsPos()
+    {
+        Vector3[] curWheelPos = mainBodyModel.GetComponent<WheelsPositions>().ReturnWheelsPosition();
+    
+        for (int i = 0; i < 4; i++)
+        {
+            Debug.Log(curWheelPos[i]);
+            wheelColliders[i].transform.localPosition = curWheelPos[i];
+            wheelColliders[i].radius = bodyParentTransform.GetChild(0).GetComponent<WheelsPositions>().WheelsRadius;
+            
+            wheels[i].transform.localPosition = curWheelPos[i];
+        }
+    }
+
+    private void NextBodyColor()
+    {
+        if(curBodyColorIndex + 1 <= bodyColors.Length - 1)
+            curBodyColorIndex += 1;
+        else 
+            curBodyColorIndex = 0;
+
+        bodyColorMaterial.color = bodyColors[curBodyColorIndex];
+
     }
 
     private void Inputs()
@@ -118,10 +216,19 @@ public class CarControl : MonoBehaviour
                 wheelColliders[i].brakeTorque = 0;
             }
 
-            
-
             Vector3 pos;
             Quaternion rot;
+
+            WheelHit hit;
+            if (wheelColliders[i].GetGroundHit(out hit))
+                if (Mathf.Abs(hit.forwardSlip) + Mathf.Abs(hit.sidewaysSlip) >= slipLim)
+                {
+                    wheelColliders[i].GetComponentInChildren<ParticleSystem>().Play();
+                }
+                else
+                {
+                    wheelColliders[i].GetComponentInChildren<ParticleSystem>().Stop();
+                }
 
             wheelColliders[i].GetWorldPose(out pos, out rot);
 
@@ -141,19 +248,10 @@ public class CarControl : MonoBehaviour
         Debug.Log("AllChanges");
     }
 
-    private void TireSmokeAnim(int i )
+    private void SetCarVisualSettings()
     {
         
-
-        WheelHit hit;
-        if (wheelColliders[i].GetGroundHit(out hit))
-            if (Mathf.Abs(hit.forwardSlip) + Mathf.Abs(hit.sidewaysSlip) >= slipLim)
-            {
-                wheelColliders[i].GetComponentInChildren<ParticleSystem>().Play();
-            }
-            else
-            {
-                wheelColliders[i].GetComponentInChildren<ParticleSystem>().Stop();
-            }
+        Debug.Log("All body Changes was applyed");
     }
+
 }
