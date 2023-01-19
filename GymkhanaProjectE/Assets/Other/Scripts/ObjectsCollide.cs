@@ -3,6 +3,26 @@ using System.Collections;
 
 public class ObjectsCollide : MonoBehaviour
 {
+    private PlayerScore playerScore;
+    [SerializeField] private uint scoreToPlayer;
+    private bool isActive = false;
+
+    void Awake()
+    {
+        playerScore = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScore>();
+    }
+
+    void Start()
+    {
+        StartCoroutine(ChangeActive());
+    }
+
+    IEnumerator ChangeActive()
+    {
+        yield return new WaitForSecondsRealtime(4);
+        isActive = true;
+    }
+
     void OnCollisionEnter(Collision other)
     {
         StartCoroutine(DestroyObj(other));
@@ -10,15 +30,12 @@ public class ObjectsCollide : MonoBehaviour
 
     IEnumerator DestroyObj(Collision other)
     {
-        yield return new WaitForSecondsRealtime(2);
-
-        
-        if (other.gameObject.tag == "Player")
+        if ((other.gameObject.tag == "Player" || other.gameObject.tag == "Objects") & isActive)
         {
-            this.GetComponent<BoxCollider>().enabled = false;
-            this.GetComponent<CapsuleCollider>().enabled = false;
+            playerScore.AddScore(scoreToPlayer);
+            yield return new WaitForSecondsRealtime(2);
 
-            Destroy(this, 3f);
+            Destroy(this.gameObject, 3f);
         }
     }
 }

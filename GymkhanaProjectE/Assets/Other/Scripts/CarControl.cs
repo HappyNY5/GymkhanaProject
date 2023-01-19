@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CarControl : MonoBehaviour
@@ -23,6 +21,7 @@ public class CarControl : MonoBehaviour
     [SerializeField] private Color smokeColor;
     [SerializeField] private Material smokeMaterial;
     [SerializeField] private Mesh smokeMesh;
+    private float precentForAxle = 0.6f;
 
     [Space]
     [Header("---OTHERS---")]
@@ -31,6 +30,8 @@ public class CarControl : MonoBehaviour
     [SerializeField] private float motorForce;
     [SerializeField] private float steerAngle;
     [SerializeField] private float slipLim;
+
+    
 
     private float horizInput, vertInput, curSteerAngle;
     private Rigidbody rigidBody;
@@ -78,6 +79,7 @@ public class CarControl : MonoBehaviour
         {
             NextWheels();
         }
+        
     }
 
    
@@ -143,20 +145,10 @@ public class CarControl : MonoBehaviour
 
         mainWheelsModel = wheelModels[curWheelsIndex];
 
-
-        
         for (int i = 0; i < 4; i++)
         {
-
             wheels[i].GetComponentInChildren<MeshFilter>().mesh = mainWheelsModel.GetComponentInChildren<MeshFilter>().sharedMesh;
-            // Destroy(wheels[i].GetChild(0).gameObject);
-
-            // GameObject wheel = Instantiate(mainWheelsModel, wheels[i].transform.position, Quaternion.Euler(this.transform.eulerAngles.x, 90 - (180 * -1 * (i%2)), this.transform.eulerAngles.z), wheels[i]);
         }
-        
-
-        
-        
     }
 
     private void ChangeWheelsPos()
@@ -184,58 +176,78 @@ public class CarControl : MonoBehaviour
 
     }
 
-    private void Inputs()
+
+    public void Inputs()
     {
+        
         horizInput = Input.GetAxis("Horizontal");
-        vertInput = Input.GetAxis("Vertical");
+        bool handbreak = Input.GetKey(KeyCode.Space);
+        vertInput = 1f;
+        
 
         curSteerAngle = steerAngle * horizInput;
 
         wheelColliders[0].steerAngle = curSteerAngle;
         wheelColliders[1].steerAngle = curSteerAngle;
 
-        UpdateWheels();
-
+        UpdateWheels(handbreak);
     }
 
-    private void UpdateWheels()
+    private void UpdateWheels(bool _handbr)
     {
         for (int i = 0; i < 4; i++)
         {
-
-            if (rigidBody.velocity.magnitude < maxSpeed && vertInput > 0)
+            WheelHit hit;
+            if (wheelColliders[i].GetGroundHit(out hit))
             {
-                wheelColliders[i].motorTorque = motorForce * vertInput;
+                if (Mathf.Abs(hit.forwardSlip) + Mathf.Abs(hit.sidewaysSlip) >= slipLim)
+                {
+                    // wheelColliders[i].transform.GetChild(0).gameObject.active = true;
+                    wheelColliders[i].GetComponentInChildren<ParticleSystem>().emissionRate = 30;
+                }
+                else
+                {
+                    wheelColliders[i].GetComponentInChildren<ParticleSystem>().emissionRate = 0;
+                }
+            }
+            if(i < 2)
+                precentForAxle = 1f;
+            else
+                precentForAxle = 1;
+
+
+            if (rigidBody.velocity.magnitude < maxSpeed  && !_handbr)
+            {
+                wheelColliders[i].motorTorque = motorForce * vertInput * precentForAxle;
                 wheelColliders[i].brakeTorque = 0;
             }
-            else if (vertInput < 0)
-                wheelColliders[i].brakeTorque = 100000;
             else
             {
                 wheelColliders[i].motorTorque = 0;
                 wheelColliders[i].brakeTorque = 0;
             }
+            
+            if (_handbr && i>=2)
+            {
+                wheelColliders[i].motorTorque = 0;
+                wheelColliders[i].brakeTorque = 3000000;
+            }
 
             Vector3 pos;
             Quaternion rot;
 
-            WheelHit hit;
-            if (wheelColliders[i].GetGroundHit(out hit))
-                if (Mathf.Abs(hit.forwardSlip) + Mathf.Abs(hit.sidewaysSlip) >= slipLim)
-                {
-                    wheelColliders[i].GetComponentInChildren<ParticleSystem>().Play();
-                }
-                else
-                {
-                    wheelColliders[i].GetComponentInChildren<ParticleSystem>().Stop();
-                }
+
 
             wheelColliders[i].GetWorldPose(out pos, out rot);
-
 
             wheels[i].position = pos;
             wheels[i].rotation = rot;
         }
+    }
+
+    private void ChangeParticlePlay(bool enable)
+    {
+        
     }
 
     private void SetSmokeSettings()
