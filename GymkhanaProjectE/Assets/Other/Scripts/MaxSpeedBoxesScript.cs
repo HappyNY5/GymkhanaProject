@@ -3,14 +3,18 @@ using UnityEngine;
 public class MaxSpeedBoxesScript : MonoBehaviour
 {
     [SerializeField] private int newMaxSpeed;
+    [SerializeField] private bool breakFlag = true;
+
 
     void OnTriggerEnter(Collider other)
     {
         if(CarControl.MaxSpeed != newMaxSpeed & other.tag == "Player")
         {
             CarControl.MaxSpeed = newMaxSpeed;
-            CarControl.InBreakingZone = true;
             Debug.Log("Max speed updd");
+            
+            if (breakFlag)
+                CarControl.InBreakingZone = true;
         }
     }
 

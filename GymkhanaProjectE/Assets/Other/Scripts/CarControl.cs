@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CarControl : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class CarControl : MonoBehaviour
     [SerializeField] private float steerAngle;
     [SerializeField] private float slipLim;
     
-    public static int MaxSpeed = 50;
+    public static int MaxSpeed = 27;
 
     
 
@@ -58,9 +59,12 @@ public class CarControl : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
-            this.transform.position = startPos;
-            this.transform.rotation = Quaternion.Euler(Vector3.zero);
-            rigidBody.velocity = Vector3.zero;
+            // this.transform.position = startPos;
+            // this.transform.rotation = Quaternion.Euler(Vector3.zero);
+            // rigidBody.velocity = Vector3.zero;
+        
+            SceneManager.LoadScene(0);
+        
         }
 
         if(Input.GetKeyDown(KeyCode.F))
@@ -182,6 +186,10 @@ public class CarControl : MonoBehaviour
     {
         
         horizInput = Input.GetAxis("Horizontal");
+
+        // horizInput = Input.acceleration.x;
+
+
         bool handbreak = Input.GetKey(KeyCode.Space);
         vertInput = 1 - (rigidBody.velocity.magnitude / MaxSpeed);
         
