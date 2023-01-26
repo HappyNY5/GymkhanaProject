@@ -16,7 +16,7 @@ public class CarControl : MonoBehaviour
 
     [Space]
     [Header("---WHEELS SETTINGS---")]
-    [SerializeField] private WheelCollider[] wheelColliders;
+    [SerializeField] private static WheelCollider[] wheelColliders = new WheelCollider[4];
     [SerializeField] private Transform[] wheels;
     [Space]
     [SerializeField] private Color smokeColor;
@@ -31,8 +31,9 @@ public class CarControl : MonoBehaviour
     [SerializeField] private float breakingForce;
     [SerializeField] private float steerAngle;
     [SerializeField] private float slipLim;
+    [SerializeField] private Transform centerOfMass;
     
-    public static int MaxSpeed = 27;
+    public static int MaxSpeed = 60;
 
     
 
@@ -48,22 +49,35 @@ public class CarControl : MonoBehaviour
     void Start()
     {
         rigidBody = this.GetComponent<Rigidbody>();
+        rigidBody.centerOfMass = centerOfMass.localPosition;
         startPos = this.transform.position;
 
         bodyParentTransform = this.transform.GetChild(0);
 
+        FindWheelColliders();
+
         NextBody();
+    }
+
+    private void FindWheelColliders()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Transform wheel = this.transform.GetChild(2).transform.GetChild(i);
+            wheelColliders[i] = wheel.GetComponent<WheelCollider>();
+            Debug.Log(wheel.name);
+        }
     }
 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
-            // this.transform.position = startPos;
-            // this.transform.rotation = Quaternion.Euler(Vector3.zero);
-            // rigidBody.velocity = Vector3.zero;
+            this.transform.position = startPos;
+            this.transform.rotation = Quaternion.Euler(Vector3.zero);
+            rigidBody.velocity = Vector3.zero;
         
-            SceneManager.LoadScene(0);
+            // SceneManager.LoadScene(0);
         
         }
 
@@ -191,7 +205,10 @@ public class CarControl : MonoBehaviour
 
 
         bool handbreak = Input.GetKey(KeyCode.Space);
-        vertInput = 1 - (rigidBody.velocity.magnitude / MaxSpeed);
+        vertInput = ((float)((1 - Math.Pow(rigidBody.velocity.magnitude / MaxSpeed, 4)))) * Input.GetAxis("Vertical");
+        // Debug.Log(vertInput);
+        // vertInput = Input.GetAxis("Vertical");
+        
         
 
         curSteerAngle = steerAngle * horizInput;
@@ -212,48 +229,74 @@ public class CarControl : MonoBehaviour
         float angle = Vector2.Angle(vec1.normalized, vec22.normalized);
         float angleCoefficient = angle/360;
 
+        Debug.Log(vertInput + angleCoefficient);
 
-        for (int i = 0; i < 4; i++)
+
+        for (int i = 0; i < 3; i+=2)
         {
+// Debug.Log($"Wheel {i + 1} RPM = {wheelColliders[i].rpm}");
+
             WheelHit hit;
             if (wheelColliders[i].GetGroundHit(out hit))
             {
                 if (Mathf.Abs(hit.forwardSlip) + Mathf.Abs(hit.sidewaysSlip) >= slipLim)
                 {
                     wheelColliders[i].GetComponentInChildren<ParticleSystem>().emissionRate = 30;
+                    wheelColliders[i+1].GetComponentInChildren<ParticleSystem>().emissionRate = 30;
                 }
                 else
                 {
                     wheelColliders[i].GetComponentInChildren<ParticleSystem>().emissionRate = 0;
+                    wheelColliders[i+1].GetComponentInChildren<ParticleSystem>().emissionRate = 0;
                 }
             }
 
             if (!_handbr && !InBreakingZone)
             {
                 wheelColliders[i].brakeTorque = 0;
+                wheelColliders[i+1].brakeTorque = 0;
                 wheelColliders[i].motorTorque = (MaxSpeed * motorForce * (vertInput + angleCoefficient )) / (((float)Math.PI) * wheelColliders[i].radius * 2);
+                wheelColliders[i+1].motorTorque = (MaxSpeed * motorForce * (vertInput + angleCoefficient )) / (((float)Math.PI) * wheelColliders[i].radius * 2);
             }
             
             if (_handbr && i>=2)
             {
                 wheelColliders[i].motorTorque = 0;
+                wheelColliders[i+1].motorTorque = 0;
                 wheelColliders[i].brakeTorque = 3000000;
+                wheelColliders[i+1].brakeTorque = 3000000;
             }
 
             if(InBreakingZone)
             {
                 wheelColliders[i].motorTorque = 0;
                 wheelColliders[i].brakeTorque = breakingForce;
+
+                wheelColliders[i+1].motorTorque = 0;
+                wheelColliders[i+1].brakeTorque = breakingForce;
 Debug.Log("Break");
+            }
+
+            if(vertInput < 0)
+            {
+                wheelColliders[i].brakeTorque = breakingForce;
+                wheelColliders[i+1].brakeTorque = breakingForce;
             }
 
             Vector3 pos;
             Quaternion rot;
 
+            Vector3 pos1;
+            Quaternion rot1;
+
             wheelColliders[i].GetWorldPose(out pos, out rot);
+            wheelColliders[i+1].GetWorldPose(out pos1, out rot1);
 
             wheels[i].position = pos;
             wheels[i].rotation = rot;
+
+            wheels[i+1].position = pos1;
+            wheels[i+1].rotation = rot1;
         }
     }
 
@@ -279,8 +322,16 @@ Debug.Log("Break");
     }
 
 
-    public void BreakPlace()
-    {
 
+    public static void DriftMode(bool enabled)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            WheelFrictionCurve sf = wheelColliders[i].sidewaysFriction;
+
+            sf.stiffness = (enabled ? 0.5f : 3f);
+
+            wheelColliders[i].sidewaysFriction = sf; 
+        }
     }
 }
