@@ -8,13 +8,13 @@ public class MaxSpeedBoxesScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(CarControl.MaxSpeed != newMaxSpeed & other.tag == "Player")
-        {
-            CarControl.MaxSpeed = newMaxSpeed;
+        // if(CarControl.MaxSpeed != newMaxSpeed & other.tag == "Player")
+        // {
+        //     CarControl.MaxSpeed = newMaxSpeed;
 
-            CarControl.DriftMode(startDriftZone);
+        //     CarControl.DriftMode(startDriftZone);
 
-            Debug.Log($"Max speed = {newMaxSpeed} \n Drift mode = {startDriftZone}");
-        }
+        //     Debug.Log($"Max speed = {newMaxSpeed} \n Drift mode = {startDriftZone}");
+        // }
     }
 }
