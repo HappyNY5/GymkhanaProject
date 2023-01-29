@@ -44,8 +44,8 @@ public class CarControllerV2 : MonoBehaviour
 
     void Start()
     {
+        startPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         rigidBody.transform.parent = null;
-        startPos = transform.position;
 
         transform.GetChild(0).GetComponent<MeshRenderer>().material = bodyColorMaterial;
     }
