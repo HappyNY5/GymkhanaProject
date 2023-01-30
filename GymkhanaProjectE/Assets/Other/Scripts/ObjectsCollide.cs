@@ -25,7 +25,16 @@ public class ObjectsCollide : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        StartCoroutine(DestroyObj(other));
+        // StartCoroutine(DestroyObj(other));
+
+        if ((other.gameObject.tag == "Player" || other.gameObject.tag == "Objects") & isActive)
+        {
+            playerScore.AddScore(scoreToPlayer);
+            // yield return new WaitForSecondsRealtime(2);
+
+            Destroy(this.gameObject, 3f);
+        }
+
     }
 
     IEnumerator DestroyObj(Collision other)

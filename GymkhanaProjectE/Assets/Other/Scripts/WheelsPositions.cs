@@ -38,13 +38,13 @@ public class WheelsPositions : MonoBehaviour
             {
                 _wp[i] = transform.GetChild(a).transform.GetChild(i).position;
                 Destroy(transform.GetChild(a).transform.GetChild(i).gameObject);
-                Debug.Log(this.transform.GetChildCount());
+                // Debug.Log(this.transform.GetChildCount());
             }
 
 
             wheelsPositions.Add(car.bodyModelsMesh[a], _wp);
             Destroy(this.transform.GetChild(a).gameObject);
-            Debug.Log($"WHeel pos {a} added");
+            // Debug.Log($"WHeel pos {a} added");
         }
     }
 

@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class CarControllerV2 : MonoBehaviour
 {
@@ -11,18 +14,24 @@ public class CarControllerV2 : MonoBehaviour
     [SerializeField] private WheelsPositions wheelsPositions;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private Transform groundRayPoint;
+    private float acceleration = 0f;
+    private float oldSpeed = 0f;
+    
+
     [Space]
 
     [Header("---VISUAL PARTS---")]
     //body
     [SerializeField] public Mesh[] bodyModelsMesh;
-    private int curBodyIndex = 0; 
+    [SerializeField] public float wheelRadius;
+    private int curBodyMeshIndex = 0; 
     [SerializeField] private Material bodyColorMaterial;
-    private uint curBodyColorIndex = 0; 
+    private int curBodyColorIndex = 0; 
 
     //wheels
     [SerializeField] private Mesh[] wheelModelsMesh;
-    private uint curWheelsModelsIndex = 0; 
+    [SerializeField] private Material wheelsColorMaterial;
+    private int curWheelsMeshIndex = 0; 
     private int curWheelsColorIndex = 0;
 
     //colors
@@ -39,6 +48,7 @@ public class CarControllerV2 : MonoBehaviour
     private Vector3 startPos;
     private float horizInput, vertInput;
     private bool grounded = false;
+    private float curSpeed = 0;
 
 
 
@@ -48,49 +58,65 @@ public class CarControllerV2 : MonoBehaviour
         rigidBody.transform.parent = null;
 
         transform.GetChild(0).GetComponent<MeshRenderer>().material = bodyColorMaterial;
+
+        SelectBodySettings();
+        SelectWheelSettings();
+        SelectSmokeSettings();
     }
 
     void Update()
     {
-        SphereCarControl();
+        curSpeed = rigidBody.velocity.magnitude;
+        WheelRotating();
 
+        SphereCarControl();
+        SmokeWorking();
         InputManager();
+    }
+
+    private void WheelRotating()
+    {
+        
+        float newAngle = (360 * curSpeed * Time.deltaTime)/(3.14f * wheelRadius * 2);
+
+        newAngle = ((vertInput < 0) ? -newAngle : newAngle);
+        Debug.Log(newAngle);
+
+        for (int i = 0; i < 4; i++)
+        {
+            wheelsModelsTransform[i].localRotation = Quaternion.Euler(0, wheelsModelsTransform[i].localRotation.eulerAngles.y, wheelsModelsTransform[i].localRotation.eulerAngles.z + newAngle);
+        }
+    }
+
+    private void SmokeWorking()
+    {
+        if(acceleration > 10 || horizInput != 0)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                wheelsModelsTransform[i].GetChild(0).GetComponent<ParticleSystem>().emissionRate = 35;
+            }
+        }else{
+            for (int i = 0; i < 4; i++)
+            {
+                wheelsModelsTransform[i].GetChild(0).GetComponent<ParticleSystem>().emissionRate = 0;
+            }
+        }
     }
 
     private void InputManager()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            this.transform.position = startPos;
-            this.transform.rotation = Quaternion.Euler(Vector3.zero);
-            rigidBody.velocity = Vector3.zero;
-
-            // SceneManager.LoadScene(0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            SetSmokeSettings();
-        }
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            NextBody();
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            NextBodyColor();
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            NextWheelsModel();
-        }
+            SceneManager.LoadScene(0);
+        }       
     }
 
     void FixedUpdate()
     {
+        acceleration = (curSpeed - oldSpeed)/ Time.fixedDeltaTime;
+        oldSpeed = curSpeed;
+
         RaycastHit hit;
         if(Physics.Raycast(groundRayPoint.position, -transform.up, out hit, 0.5f, groundLayerMask))
         {
@@ -114,6 +140,7 @@ public class CarControllerV2 : MonoBehaviour
 
         horizInput = Input.GetAxis("Horizontal");
 
+
         if (Input.GetAxis("Vertical") > 0)
         {
             vertInput = Input.GetAxis("Vertical") * forwardPower;
@@ -128,69 +155,76 @@ public class CarControllerV2 : MonoBehaviour
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, horizInput * turnStrength * Time.deltaTime * Input.GetAxis("Vertical"), 0f));
 
 
-        wheelsModelsTransform[0].localRotation = Quaternion.Euler(wheelsModelsTransform[0].localRotation.eulerAngles.x, (horizInput * maxWheelTurn), wheelsModelsTransform[0].localRotation.eulerAngles.z);
-        wheelsModelsTransform[1].localRotation = Quaternion.Euler(wheelsModelsTransform[0].localRotation.eulerAngles.x, (horizInput * maxWheelTurn), wheelsModelsTransform[0].localRotation.eulerAngles.z);
+        wheelsModelsTransform[0].localRotation = Quaternion.Euler(wheelsModelsTransform[0].localRotation.eulerAngles.x,90 + (horizInput * maxWheelTurn), wheelsModelsTransform[0].localRotation.eulerAngles.z);
+        wheelsModelsTransform[1].localRotation = Quaternion.Euler(wheelsModelsTransform[1].localRotation.eulerAngles.x,-90 +(horizInput * maxWheelTurn), wheelsModelsTransform[1].localRotation.eulerAngles.z);
     }
 
-    private void SetSmokeSettings()
-    {
-        smokeMaterial.color = colorsPalette[curSmokeColorIndex];
+    private void SelectSmokeSettings(int newSmokeMeshIndex = 0, int newSmokeColorIndex = 0)
+    { 
+        if((newSmokeMeshIndex > smokeMeshs.Length - 1) || (newSmokeColorIndex > colorsPalette.Length - 1))
+        {
+            Debug.Log($"new index smokes out of range\n current mesh,color {curSmokeMeshIndex}, {curSmokeColorIndex}\nnew mesh,color {newSmokeMeshIndex}, {newSmokeColorIndex}");
+            return;
+        }
+
+        curSmokeMeshIndex = newSmokeMeshIndex;
+        curSmokeColorIndex = newSmokeColorIndex;
+
+        smokeMaterial.color = colorsPalette[newSmokeColorIndex];
         for (int i = 0; i < 4; i++)
         {
-            wheelsModelsTransform[i].GetComponentInChildren<ParticleSystemRenderer>().mesh = smokeMeshs[curSmokeMeshIndex];
+            wheelsModelsTransform[i].GetComponentInChildren<ParticleSystemRenderer>().mesh = smokeMeshs[newSmokeMeshIndex];
         }
-        Debug.Log("Smoke changed");
+        Debug.Log($"Smoke changed on NAME: {smokeMeshs[curSmokeMeshIndex].name}, COLOR: {colorsPalette[newSmokeColorIndex]}");
     }
 
-    private void NextBody(int chasableBodyIndex = -1)
-    {
-        // //сделать выбор по номеру
+    private void SelectBodySettings(int newBodyMeshIndex = 0, int newBodyColorIndex = 0)
+    { 
+        if((newBodyMeshIndex > bodyModelsMesh.Length - 1) || (newBodyColorIndex > colorsPalette.Length - 1))
+        {
+            Debug.Log($"new index out of range\n current mesh,color {curBodyMeshIndex}, {curBodyColorIndex}\nnew mesh,color {newBodyMeshIndex}, {newBodyColorIndex}");
+            return;
+        }
 
-        if(curBodyIndex + 1 <= bodyModelsMesh.Length - 1)
-            curBodyIndex += 1;
-        else 
-            curBodyIndex = 0;
+        curBodyMeshIndex = newBodyMeshIndex;
+        curBodyColorIndex = newBodyColorIndex;
 
-        transform.GetChild(0).GetComponent<MeshFilter>().mesh = bodyModelsMesh[curBodyIndex];
-
-        Debug.Log($"NEW cur body index = {curBodyIndex}");
-
+        transform.GetChild(0).GetComponent<MeshFilter>().mesh = bodyModelsMesh[curBodyMeshIndex];
+        bodyColorMaterial.color = colorsPalette[curBodyColorIndex];
+        
         ChangeWheelsPos();
-    }
-
-    private void NextWheelsModel(int chasableWheelsIndex = -1)
-    {
-        //сделать выбор по номеру
-
-        if(curWheelsModelsIndex + 1 <= wheelModelsMesh.Length - 1)
-            curWheelsModelsIndex += 1;
-        else 
-            curWheelsModelsIndex = 0;
-
-        for (int i = 0; i < 4; i++)
-        {
-            transform.GetChild(0).GetChild(i).GetComponentInChildren<MeshFilter>().mesh = wheelModelsMesh[curWheelsModelsIndex];
-        }
+        
+        Debug.Log($"Body settings changed on NAME: {curBodyMeshIndex}, COLOR: {curBodyColorIndex}");
     }
 
     private void ChangeWheelsPos()
     {    
         for (int i = 0; i < 4; i++)
         {           
-            wheelsModelsTransform[i].localPosition = WheelsPositions.wheelsPositions[bodyModelsMesh[curBodyIndex]][i];
-            Debug.Log(bodyModelsMesh[curBodyIndex].name);
+            wheelsModelsTransform[i].localPosition = WheelsPositions.wheelsPositions[bodyModelsMesh[curBodyMeshIndex]][i];
+            wheelsModelsTransform[i].localRotation = Quaternion.Euler(0, 90 * Mathf.Pow(-1, i % 2), 0);
         }
-    }
-
-    private void NextBodyColor()
-    {
-        if(curBodyColorIndex + 1 <= colorsPalette.Length - 1)
-            curBodyColorIndex += 1;
-        else 
-            curBodyColorIndex = 0;
-
-        bodyColorMaterial.color = colorsPalette[curBodyColorIndex];
+        Debug.Log($"wheels position changed");
     }
 
 
+    private void SelectWheelSettings(int newWheelsMeshIndex = 0, int newWheelsColorIndex = 0)
+    { 
+        if((newWheelsMeshIndex > wheelModelsMesh.Length - 1) || (newWheelsColorIndex > colorsPalette.Length - 1))
+        {
+            Debug.Log($"new index WHEELS out of range\n current mesh,color {curBodyMeshIndex}, {curBodyColorIndex}\nnew mesh,color {newWheelsMeshIndex}, {newWheelsColorIndex}");
+            return;
+        }
+
+        curWheelsMeshIndex = newWheelsMeshIndex;
+        curWheelsColorIndex = newWheelsColorIndex;
+
+        for (int i = 0; i < 4; i++)
+        {
+            transform.GetChild(0).GetChild(i).GetComponentInChildren<MeshFilter>().mesh = wheelModelsMesh[curWheelsMeshIndex];
+            wheelsColorMaterial.color = colorsPalette[curWheelsColorIndex];
+        }
+        
+        Debug.Log($"Wheels settings changed on NAME: {curWheelsMeshIndex}, COLOR: {curWheelsColorIndex}");
+    }
 }

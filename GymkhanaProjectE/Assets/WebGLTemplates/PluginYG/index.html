@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>start
 <html lang="en-us">
 <head>
     <meta charset="utf-8">
@@ -284,6 +284,7 @@
     let reviewCanShow = false;
 
     const script = document.createElement("script");
+    
     script.src = loaderUrl;
     script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
@@ -291,6 +292,7 @@
             progressBarEmpty.style.display = "";
             progressBarFull.style.width = `${100 * progress}%`;
         }).then((unityInstance) => {
+            
             myGameInstance = unityInstance;
             loadingCover.style.display = "none";
         }).catch((message) => {
