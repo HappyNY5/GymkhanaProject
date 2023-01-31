@@ -11,7 +11,6 @@ public class CarControllerV2 : MonoBehaviour
     [SerializeField] private Rigidbody rigidBody;
     [SerializeField] private float forwardPower = 8f, revercePower = 4f, maxSpeed = 50f, turnStrength = 180f, gravityForce = 9.8f, maxWheelTurn = 30f;   
     [SerializeField] private Transform[] wheelsModelsTransform;
-    [SerializeField] private WheelsPositions wheelsPositions;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private Transform groundRayPoint;
     private float acceleration = 0f;
@@ -76,11 +75,9 @@ public class CarControllerV2 : MonoBehaviour
 
     private void WheelRotating()
     {
-        
         float newAngle = (360 * curSpeed * Time.deltaTime)/(3.14f * wheelRadius * 2);
 
         newAngle = ((vertInput < 0) ? -newAngle : newAngle);
-        Debug.Log(newAngle);
 
         for (int i = 0; i < 4; i++)
         {
@@ -90,8 +87,8 @@ public class CarControllerV2 : MonoBehaviour
 
     private void SmokeWorking()
     {
-        if(acceleration > 10 || horizInput != 0)
-        {
+        if(acceleration > 10 || (horizInput != 0 && curSpeed > 1))
+        { 
             for (int i = 0; i < 4; i++)
             {
                 wheelsModelsTransform[i].GetChild(0).GetComponent<ParticleSystem>().emissionRate = 35;
@@ -137,22 +134,27 @@ public class CarControllerV2 : MonoBehaviour
     private void SphereCarControl()
     {
         transform.position = rigidBody.transform.position;
-
-        horizInput = Input.GetAxis("Horizontal");
-
-
-        if (Input.GetAxis("Vertical") > 0)
+        if(!SDKusing.isAndro)
         {
-            vertInput = Input.GetAxis("Vertical") * forwardPower;
-        }
-        else if (Input.GetAxis("Vertical") < 0)
-        {
-            vertInput = Input.GetAxis("Vertical") * revercePower;
+            
+            horizInput = Input.GetAxis("Horizontal");
+
+
+
+            if (Input.GetAxis("Vertical") > 0)
+            {
+                vertInput = Input.GetAxis("Vertical") * forwardPower;
+            }
+            else if (Input.GetAxis("Vertical") < 0)
+            {
+                vertInput = Input.GetAxis("Vertical") * revercePower;
+            }
         }
 
 
+Debug.Log($"Vert = {vertInput} Horiz = {horizInput}");
         if (grounded)
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, horizInput * turnStrength * Time.deltaTime * Input.GetAxis("Vertical"), 0f));
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, horizInput * turnStrength * (vertInput/forwardPower) * Time.deltaTime, 0f));
 
 
         wheelsModelsTransform[0].localRotation = Quaternion.Euler(wheelsModelsTransform[0].localRotation.eulerAngles.x,90 + (horizInput * maxWheelTurn), wheelsModelsTransform[0].localRotation.eulerAngles.z);
@@ -226,5 +228,16 @@ public class CarControllerV2 : MonoBehaviour
         }
         
         Debug.Log($"Wheels settings changed on NAME: {curWheelsMeshIndex}, COLOR: {curWheelsColorIndex}");
+    }
+
+    public void GasInput(int forward)
+    {
+        vertInput = forward * forwardPower;
+    }
+
+    public void RotateInput(int rotate)
+    {
+        horizInput = rotate;   
+        
     }
 }

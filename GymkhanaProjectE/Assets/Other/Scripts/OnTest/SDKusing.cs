@@ -4,7 +4,8 @@ using TMPro;
 public class SDKusing : MonoBehaviour
 {
     [SerializeField] private TMP_Text deviceText;
-    private bool isAndro = false;
+    [SerializeField] private GameObject AndoInput;
+    public static bool isAndro = false;
 
     private void Start() 
     {
@@ -13,13 +14,15 @@ public class SDKusing : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < Input.touchCount; ++i)
-        {
-            if (Input.GetTouch(i).phase == TouchPhase.Began)
+        if(!isAndro)
+            for (int i = 0; i < Input.touchCount; ++i)
             {
-                deviceText.text = $"Device = andro";
-                isAndro = true;
+                if (Input.GetTouch(i).phase == TouchPhase.Began)
+                {
+                    deviceText.text = $"Device = andro";
+                    isAndro = true;
+                    AndoInput.active = true;
+                }
             }
-        }
     }
 }
