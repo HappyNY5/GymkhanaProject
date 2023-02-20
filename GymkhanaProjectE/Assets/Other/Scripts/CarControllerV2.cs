@@ -147,7 +147,7 @@ public class CarControllerV2 : MonoBehaviour
         float angle = Vector2.Angle(vec1.normalized, vec22.normalized);
 
         uint angleCoefficient = (uint)(angle/360);
-        Debug.Log(angleCoefficient);
+        // Debug.Log(angleCoefficient);
 
         return ((uint)(angle * (0.2f + curSpeed/maxSpeed) / 10));
     }

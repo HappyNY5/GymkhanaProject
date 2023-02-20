@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class CheckpointSystem : MonoBehaviour
 {
-    [SerializeField] private List<Transform> checkpointsPositions = new List<Transform>();
+    [SerializeField] private List<Transform> checkpointsPositionsLvl1 = new List<Transform>();
+    [SerializeField] private List<Transform> checkpointsPositionsLvl2 = new List<Transform>();
     [SerializeField] private GameObject checkpointObject;
 
     private List<List<Transform>> levels = new List<List<Transform>>();
@@ -13,13 +14,14 @@ public class CheckpointSystem : MonoBehaviour
     {
         parentTransform = this.transform;
 //    ДОБАВЛЯТЬ НОВЫЕ УРОВНИ РУЧКАМИ
-        levels.Add(checkpointsPositions);  
+        levels.Add(checkpointsPositionsLvl1);  
+        levels.Add(checkpointsPositionsLvl2);
 
 
-        BuildLvl(0);
+        // BuildLvl(0);
     }
 
-    private void BuildLvl(int curLevel)
+    public void BuildLvl(int curLevel)
     {
         ClearLvl();
 
