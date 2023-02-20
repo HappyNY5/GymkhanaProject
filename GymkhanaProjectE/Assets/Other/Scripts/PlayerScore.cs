@@ -1,28 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class PlayerScore : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private Image multiplerImageFiller;
     [SerializeField] private TMP_Text multiplerText;
+    public uint DriftAngle = 0;
 
     private float multiplerDieTime = 5;
-
-
-
     private uint playerScore = 0;
     private uint playerMultiplerScore = 0;
     private uint scoreMultipler = 1;
     private float hightSpeedScore = 20;
     private float airTime = 0;
     private float dropMultiplerTime = 0;
-    private float driftAngle = 0;
 
     void FixedUpdate()
     {
+        // Debug.Log(dropMultiplerTime);
         if(dropMultiplerTime > 0)
         {
             dropMultiplerTime -= Time.fixedDeltaTime;
@@ -43,7 +40,6 @@ public class PlayerScore : MonoBehaviour
         MultiplerChecker();
         UpdateMultiplerTimer();
     }
-
 
     private void MultiplerChecker()
     {

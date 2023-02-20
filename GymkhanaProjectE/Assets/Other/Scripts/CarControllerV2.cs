@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,6 +40,9 @@ public class CarControllerV2 : MonoBehaviour
     [SerializeField] private Mesh[] smokeMeshs;
     private int curSmokeMeshIndex = 0;
     private int curSmokeColorIndex = 0;
+
+    [Space]
+    [SerializeField] private PlayerScore playerScoreSCR;
 
     private Vector3 startPos;
     private float horizInput, vertInput;
@@ -129,6 +129,27 @@ public class CarControllerV2 : MonoBehaviour
             rigidBody.AddForce(transform.forward * vertInput * 1000f);
         else
             rigidBody.AddForce(Vector3.up * -gravityForce * 100f);  
+    
+        if(DriftScore() != 0)
+            playerScoreSCR.AddScore(DriftScore());
+    }
+
+    private uint DriftScore()
+    {
+        if(rigidBody.velocity.x < 3) return 0;
+
+        Vector2 vec1 = new Vector2(rigidBody.velocity.z, rigidBody.velocity.x);
+
+        Vector3 vec21 = new Vector3((float)Mathf.Sin(this.transform.eulerAngles.y * (Mathf.PI / 180)), 0,(float)Mathf.Cos(this.transform.eulerAngles.y * (Mathf.PI / 180)));
+
+        Vector2 vec22 = new Vector2(vec21.z, vec21.x);
+
+        float angle = Vector2.Angle(vec1.normalized, vec22.normalized);
+
+        uint angleCoefficient = (uint)(angle/360);
+        Debug.Log(angleCoefficient);
+
+        return ((uint)(angle * (0.2f + curSpeed/maxSpeed) / 10));
     }
 
     private void SphereCarControl()
@@ -136,10 +157,7 @@ public class CarControllerV2 : MonoBehaviour
         transform.position = rigidBody.transform.position;
         if(!SDKusing.isAndro)
         {
-            
             horizInput = Input.GetAxis("Horizontal");
-
-
 
             if (Input.GetAxis("Vertical") > 0)
             {
@@ -151,11 +169,8 @@ public class CarControllerV2 : MonoBehaviour
             }
         }
 
-
-Debug.Log($"Vert = {vertInput} Horiz = {horizInput}");
         if (grounded)
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, horizInput * turnStrength * (vertInput/forwardPower) * Time.deltaTime, 0f));
-
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, horizInput * turnStrength * (vertInput/forwardPower) * Time.deltaTime, 0f)); 
 
         wheelsModelsTransform[0].localRotation = Quaternion.Euler(wheelsModelsTransform[0].localRotation.eulerAngles.x,90 + (horizInput * maxWheelTurn), wheelsModelsTransform[0].localRotation.eulerAngles.z);
         wheelsModelsTransform[1].localRotation = Quaternion.Euler(wheelsModelsTransform[1].localRotation.eulerAngles.x,-90 +(horizInput * maxWheelTurn), wheelsModelsTransform[1].localRotation.eulerAngles.z);
@@ -173,6 +188,7 @@ Debug.Log($"Vert = {vertInput} Horiz = {horizInput}");
         curSmokeColorIndex = newSmokeColorIndex;
 
         smokeMaterial.color = colorsPalette[newSmokeColorIndex];
+
         for (int i = 0; i < 4; i++)
         {
             wheelsModelsTransform[i].GetComponentInChildren<ParticleSystemRenderer>().mesh = smokeMeshs[newSmokeMeshIndex];
@@ -230,6 +246,8 @@ Debug.Log($"Vert = {vertInput} Horiz = {horizInput}");
         Debug.Log($"Wheels settings changed on NAME: {curWheelsMeshIndex}, COLOR: {curWheelsColorIndex}");
     }
 
+
+    //Buttons (touch) input
     public void GasInput(int forward)
     {
         vertInput = forward * forwardPower;
@@ -238,6 +256,5 @@ Debug.Log($"Vert = {vertInput} Horiz = {horizInput}");
     public void RotateInput(int rotate)
     {
         horizInput = rotate;   
-        
     }
 }

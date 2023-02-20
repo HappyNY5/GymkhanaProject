@@ -26,10 +26,10 @@ public class CheckpointSystem : MonoBehaviour
         foreach(Transform posForCheckpoint in levels[curLevel])
         {
             GameObject go = Instantiate(checkpointObject, posForCheckpoint.position, Quaternion.Euler(posForCheckpoint.eulerAngles), parentTransform);
-            go.active = false;
+            go.SetActive(false);
         }
 
-        this.transform.GetChild(0).gameObject.active = true;
+        this.transform.GetChild(0).gameObject.SetActive(true);
 
         Debug.Log("Level BUILDED");
     }
@@ -49,7 +49,7 @@ public class CheckpointSystem : MonoBehaviour
     {
         if(parentTransform.GetChildCount() != 1)
         {
-            parentTransform.GetChild(1).gameObject.active = true; //анимация на появление
+            parentTransform.GetChild(1).gameObject.SetActive(true); //анимация на появление
             //звук прохождения
             //обновление счётчика
             Destroy(parentTransform.GetChild(0).gameObject);        
