@@ -9,6 +9,7 @@ public class StartLevel : MonoBehaviour
     public void StartLVL(int curLvl)
     {
         allNotGameCanvases.SetActive(false);
+        gameCanvas.gameObject.SetActive(true);
         gameCanvas.OpenCanvas();
         backCanvas.CloseCanvas();
 
