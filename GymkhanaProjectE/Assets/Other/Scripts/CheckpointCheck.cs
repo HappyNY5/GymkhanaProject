@@ -7,6 +7,7 @@ public class CheckpointCheck : MonoBehaviour
         if(other.tag == "Player")
         {
             CheckpointSystem.NextCheckpoint();
+            CheckpointSystem.UpdateCheckpointUI();
         }
    }
 }
