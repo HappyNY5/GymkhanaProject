@@ -65,6 +65,7 @@ public class UI_Work : MonoBehaviour
         {
             Time.timeScale = 1;
             gameCanvas.gameObject.SetActive(true);
+            CarControllerV2.isControlEnabled = false;
         } 
     }
 

@@ -2181,6 +2181,22 @@ PrefabInstance:
       propertyPath: wheelsColorMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 3f6c2a71e5b66c24a943eecee21a32c8, type: 2}
+    - target: {fileID: 5026726154577746796, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
+      propertyPath: startPoses.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026726154577746796, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
+      propertyPath: startPoses.Array.data[0].x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026726154577746796, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
+      propertyPath: startPoses.Array.data[0].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026726154577746796, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
+      propertyPath: startPoses.Array.data[0].z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5026726154577746797, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -3180,7 +3196,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6202,6 +6218,18 @@ MonoBehaviour:
       - m_Target: {fileID: 56976409}
         m_TargetAssemblyTypeName: StartLevel, Assembly-CSharp
         m_MethodName: StartLVL
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1416237380}
+        m_TargetAssemblyTypeName: CarControllerV2, Assembly-CSharp
+        m_MethodName: OnStartLvl
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13930,14 +13958,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StartLevel, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1416237380}
+        m_TargetAssemblyTypeName: CarControllerV2, Assembly-CSharp
+        m_MethodName: OnStartLvl
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -18239,18 +18267,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1856253236}
         m_TargetAssemblyTypeName: UI_Work, Assembly-CSharp
         m_MethodName: CloseCanvas
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 695236371}
-        m_TargetAssemblyTypeName: UI_Work, Assembly-CSharp
-        m_MethodName: OpenCanvas
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

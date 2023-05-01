@@ -12,6 +12,7 @@ public class StartLevel : MonoBehaviour
         gameCanvas.gameObject.SetActive(true);
         gameCanvas.OpenCanvas();
         backCanvas.CloseCanvas();
+        CarControllerV2.isControlEnabled = true;
 
         checkpointSystem.BuildLvl(curLvl);
     }

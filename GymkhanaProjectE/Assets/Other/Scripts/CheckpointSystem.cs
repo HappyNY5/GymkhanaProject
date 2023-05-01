@@ -72,6 +72,7 @@ public class CheckpointSystem : MonoBehaviour
             //анимация финиша
             Destroy(parentTransform.GetChild(0).gameObject); 
             curCheckpoinNum++; 
+            CarControllerV2.isControlEnabled = false;
             Debug.Log("FINISH");
         }
     }

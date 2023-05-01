@@ -5,11 +5,15 @@ using UnityEngine.SceneManagement;
 public class CarControllerV2 : MonoBehaviour
 {
     [Header("Sphere controller")]
+    [SerializeField] public static bool isControlEnabled = false;
     [SerializeField] private Rigidbody rigidBody;
     [SerializeField] private float forwardPower = 8f, revercePower = 4f, maxSpeed = 50f, turnStrength = 180f, gravityForce = 9.8f, maxWheelTurn = 30f;   
     [SerializeField] private Transform[] wheelsModelsTransform;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private Transform groundRayPoint;
+    [Space]
+    [Header("For levels")]
+    [SerializeField] private Vector3[] startPoses;
     private float acceleration = 0f;
     private float oldSpeed = 0f;
     
@@ -68,8 +72,9 @@ public class CarControllerV2 : MonoBehaviour
         curSpeed = rigidBody.velocity.magnitude;
         WheelRotating();
 
-        SphereCarControl();
         SmokeWorking();
+        if (isControlEnabled) SphereCarControl(); 
+        
         InputManager();
     }
 
@@ -132,6 +137,11 @@ public class CarControllerV2 : MonoBehaviour
     
         if(DriftScore() != 0)
             playerScoreSCR.AddScore(DriftScore());
+    }
+
+    public void OnStartLvl(int curLvl)
+    {
+        rigidBody.transform.position = startPoses[curLvl];
     }
 
     private uint DriftScore()
