@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &791634374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 791634375}
+  - component: {fileID: 791634376}
+  m_Layer: 6
+  m_Name: BoxCol
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &791634375
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791634374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5026726155998988451}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &791634376
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791634374}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 1, z: 8}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1821741001820930554
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +55,7 @@ GameObject:
   - component: {fileID: 7681750977985843304}
   - component: {fileID: 1432602482}
   - component: {fileID: 1432602483}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +137,7 @@ GameObject:
   - component: {fileID: 2337525441128222749}
   - component: {fileID: 1835459484}
   - component: {fileID: 1835459485}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,9 +219,9 @@ GameObject:
   - component: {fileID: 5628402868035911362}
   - component: {fileID: 1339519569442686117}
   - component: {fileID: 7596662004111255010}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -260,7 +304,7 @@ GameObject:
   - component: {fileID: 963179723687554943}
   - component: {fileID: 1145088932}
   - component: {fileID: 1145088933}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,8 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 5026726155998988450}
-  forwardPower: 12
-  revercePower: 4
+  forwardPower: 120
+  revercePower: 40
   maxSpeed: 100
   turnStrength: 180
   gravityForce: 9.8
@@ -390,19 +434,24 @@ MonoBehaviour:
   - {fileID: 2337525441128222749}
   - {fileID: 6617941134361628193}
   - {fileID: 7681750977985843304}
-  wheelsPositions: {fileID: 0}
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 1024
   groundRayPoint: {fileID: 5026726156486865117}
+  startPoses:
+  - {x: -5, y: 0, z: 5}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   bodyModelsMesh:
   - {fileID: 8121783299151960498, guid: 90b30b22e9396684a8ebfed9800837e1, type: 3}
   - {fileID: -3043639378733524305, guid: d2414254248cd33468306ab6ab351496, type: 3}
+  wheelRadius: 1.2
   bodyColorMaterial: {fileID: 2100000, guid: 72a264e41998c55488cc37f37bcfb50b, type: 2}
   wheelModelsMesh:
   - {fileID: 2534964839176971238, guid: 36b0a165bd5df0340a397242f3138612, type: 3}
   - {fileID: 2534964839176971238, guid: e63cdb476e08f524499344c4fddb8008, type: 3}
   - {fileID: 289301614986012343, guid: 1b14f911166c4a94cb7b8614327fd153, type: 3}
+  wheelsColorMaterial: {fileID: 2100000, guid: 3f6c2a71e5b66c24a943eecee21a32c8, type: 2}
   colorsPalette:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0, g: 0, b: 0, a: 0}
@@ -410,6 +459,7 @@ MonoBehaviour:
   smokeMeshs:
   - {fileID: 289301614986012343, guid: c653826fcff994848b280cf435f69c2d, type: 3}
   - {fileID: 289301614986012343, guid: 1b14f911166c4a94cb7b8614327fd153, type: 3}
+  playerScoreSCR: {fileID: 1547835762}
 --- !u!114 &1547835762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +475,7 @@ MonoBehaviour:
   scoreText: {fileID: 0}
   multiplerImageFiller: {fileID: 0}
   multiplerText: {fileID: 0}
+  DriftAngle: 0
 --- !u!1 &5026726155998988448
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +505,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 791634375}
   m_Father: {fileID: 5026726154577746797}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -487,7 +539,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5026726155998988448}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1000
   m_Drag: 3
   m_AngularDrag: 4
   m_UseGravity: 1
@@ -536,7 +588,7 @@ GameObject:
   - component: {fileID: 6617941134361628193}
   - component: {fileID: 1653622555}
   - component: {fileID: 1653622556}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,6 +714,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Smoke
       objectReference: {fileID: 0}
+    - target: {fileID: 2856657164685668143, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
 --- !u!4 &2593515957740208711 stripped
@@ -723,6 +779,10 @@ PrefabInstance:
     - target: {fileID: 2856657164685668143, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
       propertyPath: m_Name
       value: Smoke
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856657164685668143, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
@@ -786,6 +846,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Smoke
       objectReference: {fileID: 0}
+    - target: {fileID: 2856657164685668143, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
 --- !u!4 &12947732893179357 stripped
@@ -847,6 +911,10 @@ PrefabInstance:
     - target: {fileID: 2856657164685668143, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
       propertyPath: m_Name
       value: Smoke
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856657164685668143, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b252d77289fcceb4797219ef9da0aac8, type: 3}
