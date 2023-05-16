@@ -4,18 +4,24 @@ using TMPro;
 
 public class PlayerScore : MonoBehaviour
 {
-    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private  TMP_Text scoreText1;
+    private static TMP_Text scoreText;
     [SerializeField] private Image multiplerImageFiller;
     [SerializeField] private TMP_Text multiplerText;
     public uint DriftAngle = 0;
+    
 
     private float multiplerDieTime = 5;
-    private uint playerScore = 0;
-    private uint playerMultiplerScore = 0;
-    private uint scoreMultipler = 1;
+    private static uint playerScore = 0;
+    private static uint playerMultiplerScore = 0;
+    private static uint scoreMultipler = 1;
     private float hightSpeedScore = 20;
     private float airTime = 0;
     private float dropMultiplerTime = 0;
+
+    private void Awake() {
+        scoreText = scoreText1;
+    }
 
     void FixedUpdate()
     {
@@ -32,6 +38,18 @@ public class PlayerScore : MonoBehaviour
             scoreMultipler = 1;
             MultiplerChecker();
         }
+    }
+    public static uint ReturnPlayerScore()
+    {
+        return (playerScore + playerMultiplerScore * scoreMultipler);
+    }
+
+    public static void ClearPlayerScore()
+    {
+        playerScore = 0;
+        playerMultiplerScore=0;
+        scoreMultipler=0;
+        UpdateScoreText();
     }
 
     public void AddScore(uint score)
@@ -62,7 +80,7 @@ public class PlayerScore : MonoBehaviour
     }
 
 
-    private void UpdateScoreText()
+    public static void UpdateScoreText()
     {
         scoreText.text = $"Score = {playerScore}";
     }

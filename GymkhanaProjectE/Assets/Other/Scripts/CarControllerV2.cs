@@ -69,9 +69,11 @@ public class CarControllerV2 : MonoBehaviour
 
         transform.GetChild(0).GetComponent<MeshRenderer>().material = bodyColorMaterial;
 
-        SelectBodySettings();
-        SelectWheelSettings();
-        SelectSmokeSettings();
+        LoadSave();
+
+        SelectBodySettings(curBodyMeshIndex, curBodyColorIndex);
+        SelectWheelSettings(curWheelsMeshIndex, curWheelsColorIndex);
+        SelectSmokeSettings(curSmokeMeshIndex, curSmokeColorIndex);
     }
 
     void Update()
@@ -95,12 +97,16 @@ public class CarControllerV2 : MonoBehaviour
     {
         if(check) SelectBodySettings((curBodyMeshIndex+1)%(bodyModelsMesh.Length), curBodyColorIndex);
         else SelectBodySettings(Mathf.Abs(curBodyMeshIndex-1)%(bodyModelsMesh.Length), curBodyColorIndex);
+
+        ProgressChekerAndSaver.UpdCarInformation(ProgressChekerAndSaver.CarComponents.Body, curBodyMeshIndex, curBodyColorIndex);
     }
 
     public void NextWheels(bool check = true)
     {
         if(check) SelectWheelSettings((curWheelsMeshIndex+1)%(wheelModelsMesh.Length), curWheelsColorIndex);
         else SelectWheelSettings(Mathf.Abs(curWheelsMeshIndex-1)%(wheelModelsMesh.Length), curWheelsColorIndex);
+
+        ProgressChekerAndSaver.UpdCarInformation(ProgressChekerAndSaver.CarComponents.Wheels, curWheelsMeshIndex, curWheelsColorIndex);
 
         wheelsIndexText.text = curWheelsMeshIndex.ToString();
     }
@@ -110,6 +116,8 @@ public class CarControllerV2 : MonoBehaviour
         if(check) SelectSmokeSettings((curSmokeMeshIndex+1)%(smokeMeshs.Length), curSmokeColorIndex);
         else SelectSmokeSettings(Mathf.Abs(curSmokeMeshIndex-1)%(smokeMeshs.Length), curSmokeColorIndex);
 
+        ProgressChekerAndSaver.UpdCarInformation(ProgressChekerAndSaver.CarComponents.Smoke, curSmokeMeshIndex, curSmokeColorIndex);
+
         smokeIndexText.text = curSmokeMeshIndex.ToString();
     }
 #endregion
@@ -118,16 +126,22 @@ public class CarControllerV2 : MonoBehaviour
     public void ChangeBodyColor(int newColorIndex = 0)
     {
         SelectBodySettings(curBodyMeshIndex, newColorIndex);
+
+        ProgressChekerAndSaver.UpdCarInformation(ProgressChekerAndSaver.CarComponents.Body, curBodyMeshIndex, curBodyColorIndex);
     }
 
     public void ChangeWheelsColor(int newColorIndex = 0)
     {
         SelectWheelSettings(curWheelsMeshIndex, newColorIndex);
+
+        ProgressChekerAndSaver.UpdCarInformation(ProgressChekerAndSaver.CarComponents.Wheels, curWheelsMeshIndex, curWheelsColorIndex);
     }
 
     public void ChangeSmokeColor(int newColorIndex = 0)
     {
         SelectSmokeSettings(curSmokeMeshIndex, newColorIndex);
+
+        ProgressChekerAndSaver.UpdCarInformation(ProgressChekerAndSaver.CarComponents.Smoke, curSmokeMeshIndex, curSmokeColorIndex);
     }
 #endregion
 
@@ -325,5 +339,19 @@ public class CarControllerV2 : MonoBehaviour
     public void RotateInput(int rotate)
     {
         horizInput = rotate;   
+    }
+
+    private void LoadSave()
+    {
+        curBodyMeshIndex = PlayerPrefs.GetInt("bodyIndex");
+        curBodyColorIndex = PlayerPrefs.GetInt("bodycolorIndex");
+
+        curWheelsMeshIndex = PlayerPrefs.GetInt("wheelsIndex");
+        curWheelsColorIndex = PlayerPrefs.GetInt("wheelscolorIndex");
+
+        curSmokeMeshIndex = PlayerPrefs.GetInt("smokeIndex");
+        curSmokeColorIndex = PlayerPrefs.GetInt("smokecolorIndex");
+
+        Debug.Log("Game Load");
     }
 }

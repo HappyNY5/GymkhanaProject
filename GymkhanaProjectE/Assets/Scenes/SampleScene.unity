@@ -2378,9 +2378,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1344877928}
     - target: {fileID: 1547835762, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
+      propertyPath: scoreText1
+      value: 
+      objectReference: {fileID: 1344877928}
+    - target: {fileID: 1547835762, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
       propertyPath: multiplerText
       value: 
       objectReference: {fileID: 1632208947}
+    - target: {fileID: 1547835762, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
+      propertyPath: finishScoreText
+      value: 
+      objectReference: {fileID: 1700324801}
+    - target: {fileID: 1547835762, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
+      propertyPath: finishScoreImage
+      value: 
+      objectReference: {fileID: 1678259125}
     - target: {fileID: 1547835762, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
       propertyPath: multiplerImageFiller
       value: 
@@ -4416,7 +4428,7 @@ GameObject:
   - component: {fileID: 337109452}
   - component: {fileID: 337109453}
   m_Layer: 5
-  m_Name: LanguageSelector
+  m_Name: ImageSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7077,7 +7089,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 530824266}
   m_OnClick:
     m_PersistentCalls:
@@ -7801,6 +7813,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1547769752}
+        m_TargetAssemblyTypeName: ProgressChekerAndSaver, Assembly-CSharp
+        m_MethodName: SaveInfo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &588227296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8132,7 +8156,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 593531747}
-  m_LocalRotation: {x: 0.18845534, y: 0.5056882, z: -0.114255525, w: 0.8340922}
+  m_LocalRotation: {x: 0.18845534, y: 0.50568813, z: -0.114255495, w: 0.8340922}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -10730,7 +10754,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 701891041}
   m_OnClick:
     m_PersistentCalls:
@@ -11104,7 +11128,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 727572179}
   m_OnClick:
     m_PersistentCalls:
@@ -11604,7 +11628,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 739511048}
   m_OnClick:
     m_PersistentCalls:
@@ -12160,7 +12184,7 @@ GameObject:
   - component: {fileID: 779111656}
   - component: {fileID: 779111657}
   m_Layer: 5
-  m_Name: SoundSliders
+  m_Name: ScoreInt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15314,7 +15338,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 965622430}
   m_OnClick:
     m_PersistentCalls:
@@ -20808,7 +20832,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1325803437}
   m_OnClick:
     m_PersistentCalls:
@@ -21614,6 +21638,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5026726155998988448, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
   m_PrefabInstance: {fileID: 194041143}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1379805698 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1547835762, guid: 55c648ae5839f6945a8f19c4bc2b7cea, type: 3}
+  m_PrefabInstance: {fileID: 194041143}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9634fcb0d9389459eeb66b3ade9b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1386167534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2695393710283038677, guid: 4e9b3df7a743fc24396e3c6d833f898a, type: 3}
@@ -23658,6 +23693,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1547769750}
   - component: {fileID: 1547769751}
+  - component: {fileID: 1547769752}
   m_Layer: 0
   m_Name: CheckpointSystemObject
   m_TagString: Untagged
@@ -23706,8 +23742,34 @@ MonoBehaviour:
   - {fileID: 1398277244}
   - {fileID: 1620876441}
   checkpointObject: {fileID: 3441907004671833053, guid: 9cee77e7b9f555f418305c203f5b20a3, type: 3}
+  playerScoreScr: {fileID: 1379805698}
+  finishScoreText1: {fileID: 1700324801}
+  finishScoreImage1: {fileID: 1678259125}
   checkpointCount_Text1: {fileID: 1302250262}
   finishCanvas1: {fileID: 431918232}
+--- !u!114 &1547769752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547769749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c99601f2dc26a884084490b20b544ca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lvlsButtons:
+  - {fileID: 609981467}
+  - {fileID: 1245059873}
+  - {fileID: 701891040}
+  - {fileID: 739511047}
+  - {fileID: 1911323434}
+  - {fileID: 1325803436}
+  - {fileID: 727572178}
+  - {fileID: 1589287933}
+  - {fileID: 965622429}
+  - {fileID: 530824265}
 --- !u!1001 &1548413392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24498,7 +24560,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1589287934}
   m_OnClick:
     m_PersistentCalls:
@@ -28930,7 +28992,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1911323435}
   m_OnClick:
     m_PersistentCalls:
@@ -31054,6 +31116,30 @@ MonoBehaviour:
       - m_Target: {fileID: 1937195984}
         m_TargetAssemblyTypeName: UI_Work, Assembly-CSharp
         m_MethodName: OpenCanvas
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1379805698}
+        m_TargetAssemblyTypeName: PlayerScore, Assembly-CSharp
+        m_MethodName: ClearPlayerScore
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1547769752}
+        m_TargetAssemblyTypeName: ProgressChekerAndSaver, Assembly-CSharp
+        m_MethodName: SaveInfo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

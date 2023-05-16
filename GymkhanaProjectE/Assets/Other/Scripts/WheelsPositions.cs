@@ -30,7 +30,7 @@ public class WheelsPositions : MonoBehaviour
 
     public void ReadAllWheelPos()
     {
-        for (int a = 0; a < (this.transform.GetChildCount()); a++)
+        for (int a = 0; a < (this.transform.childCount); a++)
         {
             Vector3[] _wp = new Vector3[4]{Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero};
 
