@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 
 public class CarControllerV2 : MonoBehaviour
@@ -48,10 +49,16 @@ public class CarControllerV2 : MonoBehaviour
     [Space]
     [SerializeField] private PlayerScore playerScoreSCR;
 
+    [Space]
+    [Header("--UI Garage--")]
+    [SerializeField] private TMP_Text wheelsIndexText;
+    [SerializeField] private TMP_Text smokeIndexText;
+
     private Vector3 startPos;
     private float horizInput, vertInput;
     private bool grounded = false;
     private float curSpeed = 0;
+    public bool smokeGarage = false;
 
 
 
@@ -73,9 +80,59 @@ public class CarControllerV2 : MonoBehaviour
         WheelRotating();
 
         SmokeWorking();
-        if (isControlEnabled) SphereCarControl(); 
+
+        int speedMult;
+
+        if (isControlEnabled) speedMult = 1; 
+        else speedMult = 0;
+
+        SphereCarControl(speedMult);
         
         InputManager();
+    }
+#region Next components
+    public void NextBody(bool check = true)
+    {
+        if(check) SelectBodySettings((curBodyMeshIndex+1)%(bodyModelsMesh.Length), curBodyColorIndex);
+        else SelectBodySettings(Mathf.Abs(curBodyMeshIndex-1)%(bodyModelsMesh.Length), curBodyColorIndex);
+    }
+
+    public void NextWheels(bool check = true)
+    {
+        if(check) SelectWheelSettings((curWheelsMeshIndex+1)%(wheelModelsMesh.Length), curWheelsColorIndex);
+        else SelectWheelSettings(Mathf.Abs(curWheelsMeshIndex-1)%(wheelModelsMesh.Length), curWheelsColorIndex);
+
+        wheelsIndexText.text = curWheelsMeshIndex.ToString();
+    }
+
+    public void NextSmoke(bool check = true)
+    {
+        if(check) SelectSmokeSettings((curSmokeMeshIndex+1)%(smokeMeshs.Length), curSmokeColorIndex);
+        else SelectSmokeSettings(Mathf.Abs(curSmokeMeshIndex-1)%(smokeMeshs.Length), curSmokeColorIndex);
+
+        smokeIndexText.text = curSmokeMeshIndex.ToString();
+    }
+#endregion
+
+#region Change color components
+    public void ChangeBodyColor(int newColorIndex = 0)
+    {
+        SelectBodySettings(curBodyMeshIndex, newColorIndex);
+    }
+
+    public void ChangeWheelsColor(int newColorIndex = 0)
+    {
+        SelectWheelSettings(curWheelsMeshIndex, newColorIndex);
+    }
+
+    public void ChangeSmokeColor(int newColorIndex = 0)
+    {
+        SelectSmokeSettings(curSmokeMeshIndex, newColorIndex);
+    }
+#endregion
+
+    public void OnOffSmoke(bool check = false){
+        smokeGarage = check;
     }
 
     private void WheelRotating()
@@ -92,7 +149,8 @@ public class CarControllerV2 : MonoBehaviour
 
     private void SmokeWorking()
     {
-        if(acceleration > 10 || (horizInput != 0 && curSpeed > 1))
+        // Debug.Log($"acceleration ={acceleration > 10} \n horizInput != 0 && curSpeed > 1 = {horizInput != 0 && curSpeed > 1} ");
+        if(acceleration > 10 || (horizInput != 0 && curSpeed > 1) || smokeGarage)
         { 
             for (int i = 0; i < 4; i++)
             {
@@ -161,21 +219,22 @@ public class CarControllerV2 : MonoBehaviour
 
         return ((uint)(angle * (0.2f + curSpeed/maxSpeed) / 10));
     }
+    
 
-    private void SphereCarControl()
+    private void SphereCarControl(int speedMultipler = 0)
     {
         transform.position = rigidBody.transform.position;
         if(!SDKusing.isAndro)
         {
-            horizInput = Input.GetAxis("Horizontal");
+            horizInput = Input.GetAxis("Horizontal") * speedMultipler;
 
             if (Input.GetAxis("Vertical") > 0)
             {
-                vertInput = Input.GetAxis("Vertical") * forwardPower;
+                vertInput = Input.GetAxis("Vertical") * forwardPower * speedMultipler;
             }
             else if (Input.GetAxis("Vertical") < 0)
             {
-                vertInput = Input.GetAxis("Vertical") * revercePower;
+                vertInput = Input.GetAxis("Vertical") * revercePower * speedMultipler;
             }
         }
 

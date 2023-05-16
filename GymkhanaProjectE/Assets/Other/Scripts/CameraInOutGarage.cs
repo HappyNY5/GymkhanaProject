@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
 public class CameraInOutGarage : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera camGarage;
+    [SerializeField] private CinemachineFreeLook camGarage;
     [SerializeField] private CinemachineVirtualCamera camGame;
     [SerializeField] private GameObject car;
     
-    private Vector3 carPos = new Vector3(13.4f, 146.276f, 94.3f);
+    private Vector3 carPos = new Vector3(13.4f, 148.276f, 94.3f);
     private Vector3 carStartPos = new Vector3(-5f, 3f, 5f);
     private bool inGarage = false;
 
@@ -17,12 +15,15 @@ public class CameraInOutGarage : MonoBehaviour
     {
         //Сменить камеру и переместить машину
         camGarage.Priority = 10;
-        camGarage.GetCinemachineComponent<>
+
+        // var freeLook = camGarage.GetComponent<CinemachineVirtualCamera>();
+        // freeLook.m_ = 0.05f;
+        camGarage.m_XAxis.m_InputAxisValue = 0.05f;
 
         camGame.Priority = 0;
 
-
         car.transform.position = carPos;
+        Debug.Log(car.transform.position);
     }
 
     public void OutGarage()

@@ -21,7 +21,7 @@ public class UI_Work : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log($"{curAnimTime} / {animTime}");
+        // Debug.Log($"{curAnimTime} / {animTime}");
 
         if(curAnimTime <= animTime)
         {

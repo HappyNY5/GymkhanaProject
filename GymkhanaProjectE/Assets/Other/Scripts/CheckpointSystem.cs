@@ -10,7 +10,9 @@ public class CheckpointSystem : MonoBehaviour
     [Space]
     [Header("UI")]
     [SerializeField] private  TMP_Text checkpointCount_Text1;
-    [SerializeField] private static TMP_Text checkpointCount_Text;
+    private static TMP_Text checkpointCount_Text;
+    [SerializeField] private GameObject finishCanvas1;
+    private  static GameObject finishCanvas;
 
     private List<List<Transform>> levels = new List<List<Transform>>();
     private static Transform parentTransform;
@@ -20,6 +22,7 @@ public class CheckpointSystem : MonoBehaviour
     void Start()
     {
         checkpointCount_Text = checkpointCount_Text1;
+        finishCanvas = finishCanvas1;
 
         parentTransform = this.transform;
 //    ДОБАВЛЯТЬ НОВЫЕ УРОВНИ РУЧКАМИ
@@ -70,6 +73,7 @@ public class CheckpointSystem : MonoBehaviour
             curCheckpoinNum++;
         }else{
             //анимация финиша
+            finishCanvas.GetComponent<UI_Work>().OpenCanvas();
             Destroy(parentTransform.GetChild(0).gameObject); 
             curCheckpoinNum++; 
             CarControllerV2.isControlEnabled = false;
