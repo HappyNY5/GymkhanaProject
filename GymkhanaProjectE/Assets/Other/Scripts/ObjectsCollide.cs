@@ -20,7 +20,7 @@ public class ObjectsCollide : MonoBehaviour
 
     IEnumerator ChangeActive()
     {
-        yield return new WaitForSecondsRealtime(4);
+        yield return new WaitForSecondsRealtime(2);
         isActive = true;
     }
 
