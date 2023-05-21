@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using EZCameraShake;
 
 public class ObjectsCollide : MonoBehaviour
 {
@@ -31,7 +30,7 @@ public class ObjectsCollide : MonoBehaviour
         if ((other.gameObject.tag == "Player" || other.gameObject.tag == "Objects") & isActive)
         {
             playerScore.AddScore(scoreToPlayer);
-            CameraShaker.Instance.ShakeOnce(40f, 40f, .1f, 1f);
+            // CameraShaker.Instance.ShakeOnce(40f, 40f, .1f, 1f);
             // yield return new WaitForSecondsRealtime(2);
 
             Destroy(this.gameObject, 3f);
