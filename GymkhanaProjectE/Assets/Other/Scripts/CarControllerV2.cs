@@ -14,7 +14,7 @@ public class CarControllerV2 : MonoBehaviour
     [SerializeField] private Transform groundRayPoint;
     [Space]
     [Header("For levels")]
-    [SerializeField] private Vector3[] startPoses;
+    [SerializeField] private Transform[] startPoses;
     private float acceleration = 0f;
     private float oldSpeed = 0f;
     
@@ -213,7 +213,8 @@ public class CarControllerV2 : MonoBehaviour
 
     public void OnStartLvl(int curLvl)
     {
-        rigidBody.transform.position = startPoses[curLvl];
+        rigidBody.transform.position = startPoses[curLvl].position;
+        this.transform.rotation = startPoses[curLvl].rotation;
     }
 
     private uint DriftScore()

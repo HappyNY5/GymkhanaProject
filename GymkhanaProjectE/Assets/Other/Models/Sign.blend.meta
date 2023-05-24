@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: RedLight
-    second: {fileID: 2100000, guid: 3f0c33c4a9ec4904a9364ddb1a9cad36, type: 2}
+    second: {fileID: 2100000, guid: 3f828cb3305bda4478373e0bf94d1b30, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

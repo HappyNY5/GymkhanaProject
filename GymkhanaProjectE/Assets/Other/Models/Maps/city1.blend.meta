@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Gloss
-    second: {fileID: 2100000, guid: 3f0c33c4a9ec4904a9364ddb1a9cad36, type: 2}
+    second: {fileID: 2100000, guid: 367d02152b533f041a2a38a06783dd54, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
