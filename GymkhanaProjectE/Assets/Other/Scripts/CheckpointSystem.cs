@@ -32,6 +32,8 @@ public class CheckpointSystem : MonoBehaviour
     private static TMP_Text finishScoreText;
     [SerializeField] private Image finishScoreImage1;
     private static Image finishScoreImage;
+    [SerializeField] private AudioSource finishSound1;
+    private static AudioSource finishSound;
 
 
     [Space]
@@ -61,6 +63,8 @@ public class CheckpointSystem : MonoBehaviour
         finishCanvas = finishCanvas1;
         finishScoreText = finishScoreText1;
         finishScoreImage = finishScoreImage1;
+
+        finishSound = finishSound1;
 
 
         parentTransform = this.transform;
@@ -149,6 +153,7 @@ public class CheckpointSystem : MonoBehaviour
             Destroy(parentTransform.GetChild(0).gameObject); 
             curCheckpoinNum++; 
             CarControllerV2.isControlEnabled = false;
+            finishSound.Play();
 
             //если очков больше чем надо, тогда считать как пройденный
             if(PlayerScore.ReturnPlayerScore() >= lvlScoreComplete[curLvl])

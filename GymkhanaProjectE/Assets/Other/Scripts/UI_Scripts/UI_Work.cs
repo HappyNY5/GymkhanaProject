@@ -69,10 +69,15 @@ public class UI_Work : MonoBehaviour
         } 
     }
 
-    public void ToMenu()
+    public void Back()
     {
+        closing = true;
+        opening = false;
 
-        //tp car
-        //clear lvl
+        curAnimTime = 0;
+        openMount = 1;
+
+        Time.timeScale = 1;
+        gameCanvas.gameObject.SetActive(true);
     }
 }

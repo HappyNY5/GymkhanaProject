@@ -5,6 +5,8 @@ public class ObjectsCollide : MonoBehaviour
 {
     private PlayerScore playerScore;
     [SerializeField] private uint scoreToPlayer;
+    [SerializeField] private AudioSource smashSound;
+
     private bool isActive = false;
 
     void Awake()
@@ -30,10 +32,11 @@ public class ObjectsCollide : MonoBehaviour
         if ((other.gameObject.tag == "Player" || other.gameObject.tag == "Objects") & isActive)
         {
             playerScore.AddScore(scoreToPlayer);
-            // CameraShaker.Instance.ShakeOnce(40f, 40f, .1f, 1f);
-            // yield return new WaitForSecondsRealtime(2);
 
             Destroy(this.gameObject, 3f);
+
+            if(this.TryGetComponent<AudioSource>(out AudioSource au))
+                smashSound.Play();
         }
 
     }

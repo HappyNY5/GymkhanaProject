@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-
+using System;
 
 public class CarControllerV2 : MonoBehaviour
 {
@@ -60,6 +60,10 @@ public class CarControllerV2 : MonoBehaviour
     private float curSpeed = 0;
     public bool smokeGarage = false;
 
+    [SerializeField] private AudioSource engineAudioSource;
+    private float minPitch = 0.1f;
+    private float pitchFromCar;
+
 
 
     void Start()
@@ -89,10 +93,20 @@ public class CarControllerV2 : MonoBehaviour
         else speedMult = 0;
 
         SphereCarControl(speedMult);
+        SoundControl();
         
         InputManager();
     }
-#region Next components
+
+    private void SoundControl()
+    {
+        pitchFromCar = (curSpeed/maxSpeed)*9;
+        if(pitchFromCar < minPitch)
+            engineAudioSource.pitch = minPitch;
+        else
+            engineAudioSource.pitch = pitchFromCar;
+    }
+    #region Next components
     public void NextBody(bool check = true)
     {
         if(check) SelectBodySettings((curBodyMeshIndex+1)%(bodyModelsMesh.Length), curBodyColorIndex);
