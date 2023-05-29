@@ -12,7 +12,7 @@ public class PlayerScore : MonoBehaviour
     
 
     private float multiplerDieTime = 5;
-    private static uint playerScore = 0;
+    public static uint playerScore = 0;
     private static uint playerMultiplerScore = 0;
     private static uint scoreMultipler = 1;
     private float hightSpeedScore = 20;
@@ -82,6 +82,6 @@ public class PlayerScore : MonoBehaviour
 
     public static void UpdateScoreText()
     {
-        scoreText.text = $"Score = {playerScore}";
+        scoreText.text = $"{playerScore}";
     }
 }

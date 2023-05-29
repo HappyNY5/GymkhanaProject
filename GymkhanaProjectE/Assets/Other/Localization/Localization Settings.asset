@@ -27,7 +27,7 @@ MonoBehaviour:
   m_ProjectLocaleIdentifier:
     m_Code: en
   m_PreloadBehavior: 1
-  m_InitializeSynchronously: 0
+  m_InitializeSynchronously: 1
   references:
     version: 1
     00000000:
@@ -52,7 +52,7 @@ MonoBehaviour:
           id: 6
         m_CustomTablePostprocessor:
           id: 6
-        m_UseFallback: 0
+        m_UseFallback: 1
     00000005:
       type: {class: LocalizedStringDatabase, ns: UnityEngine.Localization.Settings, asm: Unity.Localization}
       data:

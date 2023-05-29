@@ -19,6 +19,66 @@ MonoBehaviour:
     m_Key: Levels
     m_Metadata:
       m_Items: []
+  - m_Id: 82735998177280
+    m_Key: Story
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82769099624448
+    m_Key: Garage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82785700679680
+    m_Key: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82830344851456
+    m_Key: Updates
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83009986891776
+    m_Key: language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83122402627584
+    m_Key: GameSound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83177964572672
+    m_Key: MusicSound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83234516373504
+    m_Key: ToMenu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83263868112896
+    m_Key: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83338937765888
+    m_Key: Wheels
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83373301698560
+    m_Key: Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83467128279040
+    m_Key: Finish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83485235089408
+    m_Key: UpdText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86690685784064
+    m_Key: NextUpd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87316039733248
+    m_Key: 
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

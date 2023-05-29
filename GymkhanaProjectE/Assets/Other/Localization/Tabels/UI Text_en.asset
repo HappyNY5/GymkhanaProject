@@ -22,5 +22,75 @@ MonoBehaviour:
     m_Localized: Levels
     m_Metadata:
       m_Items: []
+  - m_Id: 82735998177280
+    m_Localized: Story
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82769099624448
+    m_Localized: Garage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82785700679680
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82830344851456
+    m_Localized: Updates
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83009986891776
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83467128279040
+    m_Localized: Finish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83373301698560
+    m_Localized: Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83338937765888
+    m_Localized: Wheels
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83263868112896
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83234516373504
+    m_Localized: Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83177964572672
+    m_Localized: Music sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83122402627584
+    m_Localized: Game sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83485235089408
+    m_Localized: 'NEXT UPDATE :  *.06.2023
+
+
+      1) 2 new cars
+
+      2) 2 new
+      wheels
+
+      3) NEW garage, with NEW colors
+
+      4) 3 new levels'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86690685784064
+    m_Localized: Next Updates
+    m_Metadata:
+      m_Items: []
+  - m_Id: 87316039733248
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

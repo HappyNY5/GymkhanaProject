@@ -102,7 +102,6 @@ public class CheckpointSystem : MonoBehaviour
             go.SetActive(false);
             checkpoinCount++;
         }
-
         this.transform.GetChild(0).gameObject.SetActive(true);
         // this.transform.GetChild(0).transform.gameObject.SetActive(true);
         checkpointCount_Text.text = $"{curCheckpoinNum} / {checkpoinCount}";
@@ -111,16 +110,13 @@ public class CheckpointSystem : MonoBehaviour
         {
             GameObject go = Instantiate(burrelObject, posForCheckpoint.position, Quaternion.Euler(posForCheckpoint.eulerAngles), parentObjectTransform);
         }
+Debug.Log("1 BUILDED");            
         foreach(Transform posForBarrier in levelsObjectsBarrier[curLevel])
         {
             GameObject go = Instantiate(barrierObject, posForBarrier.position, Quaternion.Euler(posForBarrier.eulerAngles), parentObjectTransform);
             // posForBarrier.gameObject.SetActive(true);
         }
-        foreach(Transform posForBarrier in levelsObjectsPillar[curLevel])
-        {
-            GameObject go = Instantiate(pillarObject, posForBarrier.position, Quaternion.Euler(posForBarrier.eulerAngles), parentObjectTransform);
-            // posForBarrier.gameObject.SetActive(true);
-        }
+Debug.Log("2 BUILDED"); 
 
         curLvl = curLevel;
         Debug.Log("Level BUILDED");

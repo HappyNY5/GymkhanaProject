@@ -1,30 +1,26 @@
 using UnityEngine;
-using System;
+using UnityEngine.Localization.Settings;
 using TMPro;
-using UnityEngine.Localization;
+
 
 
 public class ChangeLanguageButton : MonoBehaviour
 {
     [SerializeField] private TMP_Text buttonText;
-    private string[] languages = {"Rus", "Eng"};
-    private string curLanguage = "Rus";
+    private string[] languages = {"Eng", "Rus"};
+    private int curLanguageINdex = 0;
 
     void Start()
-    {
-        // инициализация языка
-        curLanguage = languages[0];
-        buttonText.text = curLanguage;
+    {        
+        buttonText.text = languages[curLanguageINdex];
     }
     public void NextLanguage()
     {
-        string newCurLanguage = languages[(Array.IndexOf(languages, curLanguage) + 1)%(languages.Length)];
-        curLanguage = newCurLanguage;
-        buttonText.text = curLanguage;
+        curLanguageINdex =  (curLanguageINdex + 1)%(languages.Length);
+        buttonText.text = languages[curLanguageINdex];
 
-        LocalizationSettings.AvailableLocales.Locales[i];
-        
-        Debug.Log($"Cur language = {curLanguage}");
-        // return curLanguage;
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[curLanguageINdex];
+
+        Debug.Log($"Cur language = {curLanguageINdex}");
     }
 }
