@@ -16,6 +16,11 @@ public class CheckpointSystem : MonoBehaviour
     [SerializeField] private List<Transform> objectsPositionsLvl2 = new List<Transform>();
     [SerializeField] private List<Transform> objectsPositionsBarierLvl2 = new List<Transform>();
     [SerializeField] private List<Transform> objectsPositionsPillarLvl2 = new List<Transform>();
+    [Space]
+    [SerializeField] private List<Transform> checkpointsPositionsLvl3 = new List<Transform>();
+    [SerializeField] private List<Transform> objectsPositionsLvl3 = new List<Transform>();
+    [SerializeField] private List<Transform> objectsPositionsBarierLvl3 = new List<Transform>();
+    
 
     [Space]
     [SerializeField] private GameObject checkpointObject;
@@ -72,12 +77,15 @@ public class CheckpointSystem : MonoBehaviour
 //    ДОБАВЛЯТЬ НОВЫЕ УРОВНИ И ОБЪЕКТЫ РУЧКАМИ
         levels.Add(checkpointsPositionsLvl1);  
         levels.Add(checkpointsPositionsLvl2);
+        levels.Add(checkpointsPositionsLvl3);
 
         levelsObjects.Add(objectsPositionsLvl1);
         levelsObjects.Add(objectsPositionsLvl2);
+        levelsObjects.Add(objectsPositionsLvl3);
 
         levelsObjectsBarrier.Add(objectsPositionsBarierLvl1);
         levelsObjectsBarrier.Add(objectsPositionsBarierLvl2);
+        levelsObjectsBarrier.Add(objectsPositionsBarierLvl3);
 
         levelsObjectsPillar.Add(objectsPositionsPillarLvl1);
         levelsObjectsPillar.Add(objectsPositionsPillarLvl2);
@@ -163,6 +171,7 @@ public class CheckpointSystem : MonoBehaviour
             finishScoreImage.fillAmount =  (float)PlayerScore.ReturnPlayerScore() / lvlScoreComplete[curLvl];
 
             PlayerScore.ClearPlayerScore();
+            ProgressChekerAndSaver.SaveInfo();
             ProgressChekerAndSaver.UpdateLvlButtons();
 
             Debug.Log("FINISH");

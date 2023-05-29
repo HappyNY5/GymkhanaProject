@@ -36,7 +36,7 @@ public class ProgressChekerAndSaver : MonoBehaviour
         {
             string name = $"lvl {i}";
             lvlsButtons1[i+1].interactable = lvlProgress[i];
-            i++;
+            Debug.Log($"{name} {lvlProgress[i]}");
         }
     }
 
@@ -74,7 +74,7 @@ public class ProgressChekerAndSaver : MonoBehaviour
         Debug.Log($"Mesh, color\nBody = {savedBodyIndex}, {savedBodyColorIndex}\nWheels = {savedWheelsIndex}, {savedWheelsColorIndex}\nSmoke = {savedSmokeIndex}, {savedSmokeColorIndex}");
     }
 
-    public void SaveInfo()
+    public static void SaveInfo()
     {
         //save
         PlayerPrefs.SetInt("bodyIndex",savedBodyIndex);
@@ -91,6 +91,7 @@ public class ProgressChekerAndSaver : MonoBehaviour
         {
             string name = $"lvl {i}";
             PlayerPrefs.SetInt(name, Convert.ToInt32(lvl));
+            
             i++;
         }
 

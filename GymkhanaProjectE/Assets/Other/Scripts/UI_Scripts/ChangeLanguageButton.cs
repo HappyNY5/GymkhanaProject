@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.Localization;
+
 
 public class ChangeLanguageButton : MonoBehaviour
 {
@@ -19,6 +21,9 @@ public class ChangeLanguageButton : MonoBehaviour
         string newCurLanguage = languages[(Array.IndexOf(languages, curLanguage) + 1)%(languages.Length)];
         curLanguage = newCurLanguage;
         buttonText.text = curLanguage;
+
+        LocalizationSettings.AvailableLocales.Locales[i];
+        
         Debug.Log($"Cur language = {curLanguage}");
         // return curLanguage;
     }
